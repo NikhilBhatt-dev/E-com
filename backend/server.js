@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 // import connectDB from './config/db.js'
 import cors from 'cors'
 import connectDB from './config/mongodb.js'
+import connectCloudinary from './config/cloudinary.js'
 
 dotenv.config()
 
