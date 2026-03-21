@@ -29,10 +29,11 @@ app.get('/' ,(req, res)=>{
 
 const startServer = async () => {
     try {
-        await connectDB()
-        app.listen(port, () => {
-            console.log(`Server running on port ${port}`)
-        })
+      await connectDB();
+      connectCloudinary(); // 🔥 ADD THIS LINE
+      app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+      });
     } catch (error) {
         console.error('Failed to start server:', error.message)
         process.exit(1)
