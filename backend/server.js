@@ -24,7 +24,7 @@ app.use("/api/user", userRouter);
 app.use('/api/product', productRouter)
 
 app.get('/' ,(req, res)=>{
-    res.send('API WORKING')
+    res.send('APIs WORKING')
 })
 
 const startServer = async () => {
