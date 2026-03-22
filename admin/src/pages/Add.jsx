@@ -1,100 +1,60 @@
-// import React from 'react'
-// import { Form } from 'react-router-dom'
-// import { assets } from '../assets/assets'
-
-
-// const Add = () => {
-//   return (
-//     <form className='flex flex-col w-full items-start gap-3'>
-//       <div>
-//         <p className='mb-2'>Upload Images</p>
-//         <div className='flex gap-2'>
-//           <label htmlFor="image1">
-//             <img className='w-20 ' src={assets.upload_area} alt="" />
-//             <input type="file" name="" id="image1" hidden/>
-//           </label>
-//           <label htmlFor="image2">
-//             <img className='w-20 ' src={assets.upload_area} alt="" />
-//             <input type="file" name="" id="image2" hidden />
-//           </label>
-//           <label htmlFor="image3">
-//             <img className='w-20 ' src={assets.upload_area} alt="" />
-//             <input type="file" name="" id="image3" hidden />
-//           </label>
-//           <label htmlFor="image4">
-//             <img className='w-20 ' src={assets.upload_area} alt="" />
-//             <input type="file" name="" id="image4" hidden />
-//           </label>
-          
-//         </div> 
-//       </div>
-
-//       <div className='w-full'>
-//         <p className='mb-2'>Product Name</p>
-//         <input className='w-full max-w px-3 py-2' type='text' placeholder='Type here'></input>
-//       </div>
-//       <div className='w-full'>
-//         <p className='mb-2'>Product Description</p>
-//         <textarea className='w-full max-w px-3 py-2' type='text' placeholder='Write here'></textarea>
-//       </div>
-
-//       <div>
-//         <div>
-//           <p>Product Category</p>
-//           <select name="" id="">
-//             <option value="Men">Men</option>
-//             <option value="Women">Women</option>
-//             <option value="Kids">Kids</option>
-//           </select>
-//         </div>
-//       </div>
-
-//       <div>
-//         <div>
-//           <p>Sub Category</p>
-//           <select name="" id="">
-//             <option value="Topwear">Topwear</option>
-//             <option value="Bottomwear">Bottomwear</option>
-//             <option value="Winterwear">Winterwear</option>
-           
-//           </select>
-//         </div>
-
-//         <div>
-//           <p>
-//             Product Price
-//           </p>
-//           <input type="Number" placeholder='25' />
-//         </div>
-//       </div>
-
-//     </form>
-//   )
-// }
-
-// export default Add
-
-import React from 'react'
+import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 
+
 const Add = () => {
+
+
+  const [image1, setImage1] = useState(false)
+  const [image2, setImage2] = useState(false)
+  const [image3, setImage3] = useState(false)
+  const [image4, setImage4] = useState(false)
+
+  const [name, setname] = useState("")
+  const [description, setdescription] = useState("")
+  const [price, setprice] = useState("")
+  const [category, setcategory] = useState("Men")
+  const [subCategory, setsubCategory] = useState("Topwear")
+  const [sizes, setsizes] = useState([])
+  const [bestseller, setbestseller] = useState(false)
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault()
+  }
+
   return (
-    <form className='flex flex-col w-full items-start gap-6'>
+    
+      <form onSubmit={onSubmitHandler} className='flex flex-col w-full items-start gap-6'>
 
       {/* Upload Images */}
       <div>
         <p className='mb-2 font-medium'>Upload Images</p>
         <div className='flex gap-3'>
-          {[1, 2, 3, 4].map((item) => (
-            <label key={item} htmlFor={`image${item}`} className='cursor-pointer'>
-              <img
-                className='w-20 h-20 object-cover border rounded-md p-1 hover:border-black transition'
-                src={assets.upload_area}
-                alt=""
-              />
-              <input type="file" id={`image${item}`} hidden />
-            </label>
-          ))}
+
+          <label className='cursor-pointer'>
+            <img className='w-20 h-20 border rounded-md'
+              src={!image1 ? assets.upload_area : URL.createObjectURL(image1)} />
+            <input onChange={(e) => setImage1(e.target.files[0])} type="file" hidden />
+          </label>
+
+          <label className='cursor-pointer'>
+            <img className='w-20 h-20 border rounded-md'
+              src={!image2 ? assets.upload_area : URL.createObjectURL(image2)} />
+            <input onChange={(e) => setImage2(e.target.files[0])} type="file" hidden />
+          </label>
+
+          <label className='cursor-pointer'>
+            <img className='w-20 h-20 border rounded-md'
+              src={!image3 ? assets.upload_area : URL.createObjectURL(image3)} />
+            <input onChange={(e) => setImage3(e.target.files[0])} type="file" hidden />
+          </label>
+
+          <label className='cursor-pointer'>
+            <img className='w-20 h-20 border rounded-md'
+              src={!image4 ? assets.upload_area : URL.createObjectURL(image4)} />
+            <input onChange={(e) => setImage4(e.target.files[0])} type="file" hidden />
+          </label>
+
         </div>
       </div>
 
@@ -102,79 +62,80 @@ const Add = () => {
       <div className='w-full'>
         <p className='mb-2 font-medium'>Product Name</p>
         <input
-          className='w-full max-w-lg px-3 py-2 border rounded-md outline-none focus:border-black'
+          onChange={(e) => setname(e.target.value)} value={name}
+          className='w-full max-w-lg px-3 py-2 border rounded-md'
           type='text'
           placeholder='Type here'
         />
       </div>
 
-      {/* Product Description */}
-      <div className='w-full'>
-        <p className='mb-2 font-medium'>Product Description</p>
-        <textarea
-          className='w-full max-w-lg px-3 py-2 border rounded-md outline-none focus:border-black'
-          placeholder='Write here'
-          rows={4}
+      {/* Description */}
+      <textarea
+        onChange={(e) => setdescription(e.target.value)} value={description}
+        className='w-full max-w-lg px-3 py-2 border rounded-md'
+        placeholder='Write here'
+      />
+
+      {/* Category */}
+      <div className='flex gap-4'>
+        <select onChange={(e) => setcategory(e.target.value)} value={category} className='border px-3 py-2'>
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+          <option value="Kids">Kids</option>
+        </select>
+
+        <select onChange={(e) => setsubCategory(e.target.value)} value={subCategory} className='border px-3 py-2'>
+          <option value="Topwear">Topwear</option>
+          <option value="Bottomwear">Bottomwear</option>
+          <option value="Winterwear">Winterwear</option>
+        </select>
+
+        <input
+          onChange={(e) => setprice(e.target.value)} value={price}
+          className='border px-3 py-2'
+          type="number"
+          placeholder='Enter price'
         />
       </div>
 
     
+     
+      
 
-      {/* Category + Subcategory + Price */}
-      <div className='flex flex-wrap gap-4'>
-
-        <div>
-          <p className='mb-2 font-medium'>Product Category</p>
-          <select className='px-3 py-2 border rounded-md outline-none'>
-            <option value="Men">Men</option>
-            <option value="Women">Women</option>
-            <option value="Kids">Kids</option>
-          </select>
-        </div>
-
-        <div>
-          <p className='mb-2 font-medium'>Sub Category</p>
-          <select className='px-3 py-2 border rounded-md outline-none'>
-            <option value="Topwear">Topwear</option>
-            <option value="Bottomwear">Bottomwear</option>
-            <option value="Winterwear">Winterwear</option>
-          </select>
-        </div>
-
-        <div>
-          <p className='mb-2 font-medium'>Product Price</p>
-          <input
-            className='px-3 py-2 border rounded-md outline-none w-32'
-            type="number"
-            placeholder='25'
-          />
-        </div>
-
+      <div className='flex gap-2'>
+        {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+          <div
+            key={size}
+            onClick={() =>
+              setsizes(prev =>
+                prev.includes(size)
+                  ? prev.filter(s => s !== size)
+                  : [...prev, size]
+              )
+            }
+            className={`px-3 py-1 border cursor-pointer rounded-md transition
+      ${sizes.includes(size)
+              ? "bg-[#c89cb2] text-white border-[#c89cb2]"
+                : "bg-white text-black border-gray-300 hover:bg-gray-100"
+              }`}
+          >
+            {size}
+          </div>
+        ))}
       </div>
 
-
-      {/* Product Size — */}
-      <div>
-        <p className='mb-2 font-medium'>Product Size</p>
-
-        <div className='flex gap-2'>
-          {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
-            <div
-              key={size}
-              className='border px-3 py-1 rounded-md cursor-pointer hover:bg-gray-100'
-            >
-              {size}
-            </div>
-          ))}
-        </div>
+      {/* Bestseller */}
+      <div className='flex gap-2'>
+       
+        <input
+          type="checkbox"
+          checked={bestseller}
+          onChange={() => setbestseller(prev => !prev)}
+        />
+        <p>Add to bestseller</p>
       </div>
 
-
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className='bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition'
-      >
+      <button className='bg-black text-white px-6 py-2'>
         ADD PRODUCT
       </button>
 
