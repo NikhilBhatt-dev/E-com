@@ -8,7 +8,15 @@ import { ShopContext } from '../context/ShopContext'
 const Nav = ({ theme, toggleTheme, isHomePage }) => {
 
     const [visible, setvisible] = useState(false);
-    const {setShowSearch, getCartCount} = useContext(ShopContext);
+    const {setShowSearch, getCartCount, navigate, token, setToken, setCartItems} = useContext(ShopContext);
+
+  const logout = () => {
+    navigate('/login')
+    localStorage.removeItem('token')
+    setToken('')
+    setCartItems({})
+    
+  }
   return (
     <div className={`flex items-center justify-between py-5 font-medium transition-colors duration-300 ${isHomePage ? 'home-nav' : ''}`}>
      <Link to='/'>
@@ -64,18 +72,21 @@ const Nav = ({ theme, toggleTheme, isHomePage }) => {
         )}
         <img onClick={()=>setShowSearch(true)} src={assets.search_icon} alt="search-icon" className='w-5 cursor-pointer' />
         
-        <div className='group relative'>
-                 
-          <Link  to='/login'> 
-          <img className='w-5 cursor-pointer' src={assets.profile_icon} alt="profile_icon" /> 
-          </Link>
-                  <div className='group-hover:block hidden absolute right-0 pt-4'>
-                      <div className={`flex flex-col gap-2 w-36 py-3 px-5 rounded shadow-md ${isHomePage ? 'home-profile-menu' : 'bg-white text-gray-500'}`}>
-                          <p className='cursor-pointer hover:text-black'>My Profile</p>
-                          <p className='cursor-pointer hover:text-black'>Orders</p>
-                          <p className='cursor-pointer hover:text-black'>Logout</p>
-                      </div>
-                  </div>
+        <div className='group relative'>           
+          <img onClick={()=> token ? null :navigate('/login')} className='w-5 cursor-pointer' src={assets.profile_icon} alt="profile_icon" /> 
+                  {/* DropDown Menu */}
+
+                  {
+            token &&
+            <div className='group-hover:block hidden absolute right-0 pt-4'>
+              <div className={`flex flex-col gap-2 w-36 py-3 px-5 rounded shadow-md ${isHomePage ? 'home-profile-menu' : 'bg-white text-gray-500'}`}>
+                <p className='cursor-pointer hover:text-black'>My Profile</p>
+                <p onClick={()=>navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
+                <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
+              </div>
+            </div>
+                  }
+                
         </div>
 
 
