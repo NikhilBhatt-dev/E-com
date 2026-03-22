@@ -27,7 +27,34 @@ const List = ({ token }) => {
     }
   };
 
+  // const removeProduct = async (id) => {
+  //   try {
+  //     const response = await axios.post(
+  //       backendUrl + '/api/product/remove/',
+  //       { id },
+  //       { headers: { token } }
+  //     )
+
+  //     if (response.data.success) {
+  //       toast.success(response.data.message);
+  //       await fetchList();
+  //     }
+  //     else {
+  //       toast.error(response.data.message);
+  //     }
+
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error(error.message);
+  //   }
+  // }
+
+
+
   const removeProduct = async (id) => {
+
+    
+
     try {
       const response = await axios.post(
         backendUrl + '/api/product/remove/',
@@ -47,7 +74,11 @@ const List = ({ token }) => {
       console.error(error);
       toast.error(error.message);
     }
+
+    setLoading(false);
   }
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchList()
@@ -80,11 +111,12 @@ const List = ({ token }) => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>{currency}{item.price}</p>
+              
               <p
-                onClick={() => removeProduct(item._id)}
-                className='cursor-pointer text-red-500'
+                onClick={() => !loading && removeProduct(item._id)}
+                className={`cursor-pointer ${loading ? "text-gray-400" : "text-red-500"}`}
               >
-                X
+                {loading ? "..." : "X"}
               </p>
 
             </div>
