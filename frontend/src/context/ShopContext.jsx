@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { products as fallbackProducts } from "../assets/assets";
 
 export const ShopContext = createContext();
 const CART_STORAGE_KEY = "cartItems";
@@ -116,15 +117,15 @@ const ShopContextProvider = (props) => {
         let totalAmount = 0;
 
         for (const items in cartItems) {
-            let itemInfo = products.find((product) => product._id === items);
+            const itemInfo = products.find((product) => product._id === items);
+
+            if (!itemInfo) {
+                continue;
+            }
 
             for (const item in cartItems[items]) {
-                try {
-                    if (cartItems[items][item] > 0) {
-                        totalAmount += itemInfo.price * cartItems[items][item];
-                    }
-                } catch (err) {
-                    console.log(err);
+                if (cartItems[items][item] > 0) {
+                    totalAmount += itemInfo.price * cartItems[items][item];
                 }
             }
         }
@@ -136,14 +137,19 @@ const ShopContextProvider = (props) => {
         try {
             const response = await axios.get(backendUrl + '/api/product/list')
             if (response.data.success) {
-                setProducts(response.data.products);
+                const fetchedProducts = Array.isArray(response.data.products)
+                    ? response.data.products
+                    : [];
+
+                setProducts(fetchedProducts.length > 0 ? fetchedProducts : fallbackProducts);
             } else {
                 toast.error(response.data.message);
+                setProducts(fallbackProducts);
             }
            
         } catch (error) {
             console.error(error);
-            
+            setProducts(fallbackProducts);
             toast.error(error.message);
         }
     }

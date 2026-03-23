@@ -23,6 +23,11 @@ const Cart = () => {
         for (const size in cartItems[item]) {
 
           if (cartItems[item][size] > 0) {
+            const productInfo = products.find((product) => product._id === item)
+
+            if (!productInfo) {
+              continue
+            }
 
             tempData.push({
               _id: item,

@@ -20,14 +20,26 @@ const Add = ({ token }) => {
   const [subCategory, setSubCategory] = useState("Topwear")
   const [sizes, setSizes] = useState([])
   const [bestseller, setBestseller] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-   
+    if (isSubmitting) {
+      return;
+    }
+
+    if (Number(price) < 0) {
+      toast.error("Price cannot be negative");
+      return;
+    }
+
+    let toastId;
 
     try {
+      setIsSubmitting(true);
+      toastId = toast.loading("Uploading product...");
       const formData = new FormData();
 
       image1 && formData.append('image1', image1);
@@ -50,7 +62,13 @@ const Add = ({ token }) => {
       );
 
       if (response.data.success) {
-        toast.success("Item Added Successfully");
+        toast.update(toastId, {
+          render: "Item added successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
         setName("");
         setDescription("");
         setImage1(false);
@@ -58,14 +76,36 @@ const Add = ({ token }) => {
         setImage3(false);
         setImage4(false);
         setPrice('');
+        setCategory('Men');
+        setSubCategory('Topwear');
+        setSizes([]);
+        setBestseller(false);
 
       } else {
-        toast.error(response.data.message);
+        toast.update(toastId, {
+          render: response.data.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 2500,
+          closeOnClick: true,
+        });
       }
-     
+      
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      if (toastId) {
+        toast.update(toastId, {
+          render: error.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 2500,
+          closeOnClick: true,
+        });
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
     
   };
@@ -143,9 +183,11 @@ const Add = ({ token }) => {
 
         <input
           onChange={(e) => setPrice(e.target.value)} value={price}
-          className='border px-3 py-2'
+          className='border px-3 py-2 no-spinner'
           type="number"
+          min="0"
           placeholder='Enter price'
+          required
         />
       </div>
 
@@ -182,8 +224,12 @@ const Add = ({ token }) => {
         <p>Add to bestseller</p>
       </div>
 
-      <button className='bg-black text-white px-6 py-2'>
-        ADD PRODUCT
+      <button
+        type='submit'
+        disabled={isSubmitting}
+        className={`bg-black text-white px-6 py-2 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+      >
+        {isSubmitting ? 'ADDING...' : 'ADD PRODUCT'}
       </button>
       
     </form>

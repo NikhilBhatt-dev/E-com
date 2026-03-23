@@ -16,6 +16,11 @@ const addProduct = async (req, res) => {
       sizes,
       bestseller,
     } = req.body;
+    const parsedPrice = Number(price);
+
+    if (Number.isNaN(parsedPrice) || parsedPrice < 0) {
+      return res.json({ success: false, message: "Price cannot be negative." });
+    }
 
     const image1 = req.files?.image1 && req.files.image1[0];
     const image2 = req.files?.image2 && req.files.image2[0];
@@ -41,7 +46,7 @@ const addProduct = async (req, res) => {
      name,
      description,
      category,
-     price: Number(price),
+     price: parsedPrice,
      subCategory,
      sizes: sizes ? JSON.parse(sizes) : [],
      bestseller: bestseller === "true" ? true : false,
