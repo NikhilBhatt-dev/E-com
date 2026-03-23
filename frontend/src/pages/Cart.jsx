@@ -3,39 +3,41 @@ import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title'
 import { assets } from '../assets/assets'
 import { Link, Navigate } from 'react-router-dom'
-import CartTotal from  '../components/CartTotal'
+import CartTotal from '../components/CartTotal'
 
 
 
 const Cart = () => {
 
-  const { products, currency, cartItems ,updateQuantity, navigate } = useContext(ShopContext)
+  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext)
 
   const [cartData, setCartData] = useState([])
 
   useEffect(() => {
 
-    const tempData = []
+    if (products.length > 0) {
 
-    for (const item in cartItems) {
-      for (const size in cartItems[item]) {
+      const tempData = []
 
-        if (cartItems[item][size] > 0) {
+      for (const item in cartItems) {
+        for (const size in cartItems[item]) {
 
-          tempData.push({
-            _id: item,
-            size: size,
-            quantity: cartItems[item][size]
-          })
+          if (cartItems[item][size] > 0) {
 
+            tempData.push({
+              _id: item,
+              size: size,
+              quantity: cartItems[item][size]
+            })
+
+          }
         }
       }
+
+      setCartData(tempData)
     }
 
-    setCartData(tempData)
-
-  }, [cartItems])
-
+  }, [cartItems, products])
 
   return (
     <div className='border-t pt-14'>
@@ -70,21 +72,21 @@ const Cart = () => {
                     {productData?.name}
                   </p>
                   <div className='flex items-center gap-5 mt-2'>
-                    
-                  
 
-                  <p>{currency}{productData?.price}</p>
 
-                  <p>Size: {item.size}</p>
 
-                  <p>Qty: {item.quantity}</p>
+                    <p>{currency}{productData?.price}</p>
+
+                    <p>Size: {item.size}</p>
+
+                    <p>Qty: {item.quantity}</p>
                   </div>
 
                 </div>
 
               </div>
 
-              <img onClick={()=>updateQuantity(item._id,item.size,0)}
+              <img onClick={() => updateQuantity(item._id, item.size, 0)}
                 className='absolute top-9 right-2 w-4 sm:w-5 cursor-pointer'
                 src={assets.bin_icon}
                 alt="Remove item"
@@ -101,7 +103,7 @@ const Cart = () => {
           <CartTotal />
 
           <div className='w-full text-end'>
-            <button onClick={()=>navigate('/place-order')} className=' bg-black text-white text-sm my-8 px-8 py-3'>
+            <button onClick={() => navigate('/place-order')} className=' bg-black text-white text-sm my-8 px-8 py-3'>
               Proceed to checkout
             </button>
           </div>

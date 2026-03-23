@@ -13,6 +13,7 @@ const Nav = ({ theme, toggleTheme, isHomePage }) => {
   const logout = () => {
     navigate('/login')
     localStorage.removeItem('token')
+    localStorage.removeItem('cartItems')
     setToken('')
     setCartItems({})
     
