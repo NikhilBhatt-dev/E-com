@@ -17,7 +17,7 @@ const PlaceOrder = () => {
     street: '',
     city: '',
     state: '',
-    zip: '',
+    zipcode: '',
     country: '',
     phone: '',
 
@@ -44,37 +44,37 @@ const PlaceOrder = () => {
         </div>
         <div className='flex gap-3'>
 
-          <input onChange={onChangeHandler }name='firstName' value={FormData.firstName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='First name' />
+          <input  required onChange={onChangeHandler }name='firstName' value={formData.firstName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='First name' />
 
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='last name' />
+          <input required onChange={onChangeHandler} name='lastName' value={FormData.lastName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='last name' />
 
         </div>
-        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="email" placeholder='Email' />
+        <input required onChange={onChangeHandler} name='email' value={FormData.email} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="email" placeholder='Email' />
 
-        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Street' />
+        <input required onChange={onChangeHandler} name='street' value={FormData.street } className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Street' />
 
 
         <div className='flex gap-3'>
 
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='city' />
+          <input required onChange={onChangeHandler} name='city' value={FormData.city} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='city' />
 
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='state' />
+          <input required onChange={onChangeHandler} name='state' value={FormData.state} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='state' />
 
         </div>
 
 
         <div className='flex gap-3'>
 
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode' />
+          <input  required onChange={onChangeHandler} name='zipcode' value={FormData.zipcode} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode' />
 
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Country' />
+          <input required onChange={onChangeHandler} name='country' value={FormData.country} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Country' />
 
         </div>
 
 
 
 
-        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
+        <input required onChange={onChangeHandler} name='phone' value={FormData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
 
 
       </div>
@@ -121,7 +121,7 @@ const PlaceOrder = () => {
 
 
           <div className='w-full text-end mt-8'>
-            <button onClick={() => navigate('/orders')} className='bg-black text-white px-16 py-3 text-sm '>Place Order</button>
+            <button type='submit'  className='bg-black text-white px-16 py-3 text-sm '>Place Order</button>
 
           </div>
 
