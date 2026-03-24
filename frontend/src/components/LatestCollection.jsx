@@ -20,7 +20,7 @@ const LatestCollection = () => {
         <div className='text-center py-9 text-3xl'>
             <Title text1={'Latest'} text2={'Collection'} />
             <p className='home-section-subtitle w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, recusandae.
+          Fresh arrivals just landed — shop the newest styles now.
                 </p>
         </div>
 
