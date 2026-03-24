@@ -2,9 +2,50 @@ import React from 'react'
 import { useContext } from 'react'
 import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
+import { useState } from 'react';
+import axios from 'axios';
+// import backendUrl from '../App';
+import { useEffect } from 'react';
+
+
 const Orders = () => {
 
-  const { products, currency } = useContext(ShopContext);
+  const { backendUrl,token, currency } = useContext(ShopContext);
+  const [orderData, setOrderData] = useState([]);
+  const loadOrderData = async () => {
+    try{
+      if (!token) {
+        return null;
+        
+      }
+      
+     const response = await axios.post(backendUrl + '/api/order/userorders', {}, { headers: { token } })
+      
+      if (response.data.success) {
+       let allOrderItems = []
+        response.data.orders.map((order) => {
+        order.items.map((item) => {
+          item['status'] = order.status;
+          item['payment'] = order.payment;
+          item['paymentMethod'] = order.paymentMethod;
+          item['date'] = order.date;
+          allOrderItems.push(item);
+          
+        })
+       })
+      console.log(allOrderItems);
+      
+      //  setOrderData(allOrderItems.reverse());
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    loadOrderData();
+  },[token])
   return (
 
     <div className='border-t pt-16'> 
@@ -16,7 +57,7 @@ const Orders = () => {
 
     <div>
       {
-        products.slice(1,4).map((item, index) => (
+       orderData.map((item, index) => (
          
           <div key={index} className='py-4 border-t border-b text-gary-700 flex   md: flex-row md:items-center md:justify-between gap-4 '>
             <div className='flex itens-start gap-6 text-sm'>
