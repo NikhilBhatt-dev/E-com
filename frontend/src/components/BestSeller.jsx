@@ -22,7 +22,7 @@ const BestSeller = () => {
                 <Title text1={'BEST'} text2={'SELLERS'} />
                
                 <p className='home-section-subtitle w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Explore our best selling items that customers can't stop buying.
                 </p>
             </div>
 
