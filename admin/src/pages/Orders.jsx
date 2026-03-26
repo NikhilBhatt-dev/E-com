@@ -9,6 +9,15 @@ import { toast } from 'react-toastify';
 const Orders = ({token}) => {
 
   const [orderData, setOrderData] = useState([])
+
+  const statusOptions = [
+    'Order Placed',
+    'Packing',
+    'Shipped',
+    'Out for delivery',
+    'Delivered',
+  ]
+
   const fetchAllOrders = async () => {
     if(!token) {
       return null;
@@ -27,7 +36,32 @@ const Orders = ({token}) => {
       toast.error(error.message)
       
     }
-    
+     
+  }
+
+  const statusHandler = async (event, orderId) => {
+    const newStatus = event.target.value
+
+    try {
+      const response = await axios.post(
+        backendUrl + '/api/order/status',
+        { orderId, status: newStatus },
+        { headers: { token } }
+      )
+
+      if (response.data.success) {
+        setOrderData((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === orderId ? { ...order, status: newStatus } : order
+          )
+        )
+        toast.success(response.data.message)
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
   useEffect(() => {
@@ -81,12 +115,16 @@ const Orders = ({token}) => {
             <p>Date: {new Date(order.date).toDateString()}</p>
           </div>
           <p>{currency}{order.amount}</p>
-          <select className='p-2 font-semibold'>
-            <option value="order Placed">Order Placed</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-            <option value="packing">Packing</option>
-
+          <select
+            value={order.status}
+            onChange={(event) => statusHandler(event, order._id)}
+            className='p-2 font-semibold'
+          >
+            {statusOptions.map((statusOption) => (
+              <option key={statusOption} value={statusOption}>
+                {statusOption}
+              </option>
+            ))}
           </select>
           {/* <p>{order.status}</p> */}
           </div>)

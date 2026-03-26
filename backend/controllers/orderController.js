@@ -82,7 +82,20 @@ const userOrders = async (req, res) => {
 // update order status from admin panel
 
 const updateOrderStatus = async (req, res) => {
+    try {
+        const { orderId, status } = req.body;
 
+        if (!orderId || !status) {
+            return res.json({ success: false, message: "Order id and status are required" });
+        }
+
+        await orderModel.findByIdAndUpdate(orderId, { status });
+
+        res.json({ success: true, message: "Order status updated" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
 }
 
 
