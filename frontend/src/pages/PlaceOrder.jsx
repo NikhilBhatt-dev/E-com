@@ -18,7 +18,7 @@ const PlaceOrder = () => {
     setCartItems,
     getCartItems,
     getCartAmount,
-    devlivery_fee,
+    delivery_fee,
     products
   } = useContext(ShopContext);
 
@@ -68,7 +68,7 @@ const PlaceOrder = () => {
       let orderData = {
         address: formData,
         items: orderItems,
-        amount: getCartAmount() + devlivery_fee,
+        amount: getCartAmount() + delivery_fee,
       };
 
       switch (method) {
@@ -93,6 +93,27 @@ const PlaceOrder = () => {
           } else {
             toast.error(response.data.message);
           }
+          break;
+
+          case 'stripe':
+            const responseStipe = await axios.post(
+              backendUrl + '/api/order/stripe',
+              orderData,
+              {
+                headers: {
+                  token: token
+                }
+              }
+            )
+
+            if(responseStipe.data.success) {
+              const {session_url} = responseStipe.data;
+              window.location.replace(session_url) 
+            }else{
+              toast.error(responseStipe.data.message);
+            }
+
+
           break;
 
         default:
