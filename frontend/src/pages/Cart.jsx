@@ -4,12 +4,13 @@ import Title from '../components/Title'
 import { assets } from '../assets/assets'
 import { Link, Navigate } from 'react-router-dom'
 import CartTotal from '../components/CartTotal'
+import PageSkeleton from '../components/PageSkeleton'
 
 
 
 const Cart = () => {
 
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext)
+  const { products, currency, cartItems, updateQuantity, navigate, isProductsLoading } = useContext(ShopContext)
 
   const [cartData, setCartData] = useState([])
 
@@ -45,6 +46,7 @@ const Cart = () => {
   }, [cartItems, products])
 
   return (
+    <PageSkeleton name="cart-page" loading={isProductsLoading && cartData.length === 0}>
     <div className='border-t pt-14'>
 
       <div className='text-2xl mb-3'>
@@ -117,6 +119,7 @@ const Cart = () => {
       </div>
 
     </div>
+    </PageSkeleton>
   )
 }
 

@@ -5,10 +5,11 @@ import { ShopContext } from '../context/ShopContext';
 import { useState } from 'react';
 import { assets } from '../assets/assets';
 import RelatedProduct from '../components/RelatedProduct';
+import PageSkeleton from '../components/PageSkeleton';
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { products, currency, addToCart, isProductsLoading } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('');
   const [size, setSize] = useState('');
@@ -27,7 +28,9 @@ const Product = () => {
     fetchProductData();
   }, [productId, products])
 
-  return productData ? (
+  return (
+    <PageSkeleton name="product-page" loading={isProductsLoading || !productData} resetKey={productId}>
+    {productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
       {/* productData */}
       <div className='flex flex-col gap-12 sm:flex-row sm:items-start'>
@@ -123,7 +126,9 @@ const Product = () => {
       <RelatedProduct category={productData.category} subCategory={productData.subCategory} />
 
     </div>
-  ) : <div className='opacity-0'></div>
+  ) : <div className='opacity-0'>Loading product...</div>}
+  </PageSkeleton>
+  )
 }
 
 export default Product

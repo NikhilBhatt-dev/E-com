@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext';
 import Title from './Title';
 import ProductItem from './ProductItem';
+import { Skeleton } from 'boneyard-js/react';
 
 const BestSeller = () => {
 
-    const { products } = useContext(ShopContext);
+    const { products, isProductsLoading } = useContext(ShopContext);
     const [bestSellers, setBestSellers] = useState([]);
 
     useEffect(() => {
@@ -16,6 +17,7 @@ const BestSeller = () => {
     }, [products]);
 
     return (
+        <Skeleton name="best-sellers" loading={isProductsLoading && bestSellers.length === 0}>
         <div className='home-section my-10'>
 
             <div className='text-center text-3xl py-8'>
@@ -40,6 +42,7 @@ const BestSeller = () => {
                 }
             </div>
         </div>
+        </Skeleton>
     )
 }
 

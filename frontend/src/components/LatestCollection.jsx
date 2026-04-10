@@ -4,10 +4,11 @@ import { ShopContext } from "../context/ShopContext";
 import Title from './Title';
 import { useState } from 'react';
 import ProductItem from './ProductItem';
+import { Skeleton } from 'boneyard-js/react';
 
 const LatestCollection = () => {
 
-    const { products } = useContext(ShopContext);
+    const { products, isProductsLoading } = useContext(ShopContext);
     const [latestProducts, setLatestProducts] = useState([]);
 
     useEffect(() => {
@@ -16,6 +17,7 @@ const LatestCollection = () => {
     
 
   return (
+    <Skeleton name="latest-collection" loading={isProductsLoading && latestProducts.length === 0}>
     <div className='home-section my-10'>
         <div className='text-center py-9 text-3xl'>
             <Title text1={'Latest'} text2={'Collection'} />
@@ -32,7 +34,8 @@ const LatestCollection = () => {
             ))}
         </div>
     </div>
-  
+    </Skeleton>
+   
   )
 }
 

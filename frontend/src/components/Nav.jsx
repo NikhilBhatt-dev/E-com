@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {assets} from '../assets/assets'
 import { Link, NavLink } from 'react-router-dom'
 import { useContext } from 'react'
@@ -8,9 +8,12 @@ import { ShopContext } from '../context/ShopContext'
 const Nav = ({ theme, toggleTheme, isHomePage }) => {
 
     const [visible, setvisible] = useState(false);
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const profileMenuRef = useRef(null);
     const {setShowSearch, getCartCount, navigate, token, setToken, setCartItems} = useContext(ShopContext);
 
   const logout = () => {
+    setIsProfileMenuOpen(false)
     navigate('/login')
     localStorage.removeItem('token')
     localStorage.removeItem('cartItems')
@@ -18,6 +21,30 @@ const Nav = ({ theme, toggleTheme, isHomePage }) => {
     setCartItems({})
     
   }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const handleProfileClick = () => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    setIsProfileMenuOpen((current) => !current);
+  };
+
   return (
     <div className={`flex items-center justify-between py-5 font-medium transition-colors duration-300 ${isHomePage ? 'home-nav' : ''}`}>
      <Link to='/'>
@@ -73,16 +100,19 @@ const Nav = ({ theme, toggleTheme, isHomePage }) => {
         )}
         <img onClick={()=>setShowSearch(true)} src={assets.search_icon} alt="search-icon" className='w-5 cursor-pointer' />
         
-        <div className='group relative'>           
-          <img onClick={()=> token ? null :navigate('/login')} className='w-5 cursor-pointer' src={assets.profile_icon} alt="profile_icon" /> 
+        <div ref={profileMenuRef} className='relative z-50'>           
+          <img onClick={handleProfileClick} className='w-5 cursor-pointer' src={assets.profile_icon} alt="profile_icon" /> 
                   {/* DropDown Menu */}
 
                   {
             token &&
-            <div className='group-hover:block hidden absolute right-0 pt-4'>
-              <div className={`flex flex-col gap-2 w-36 py-3 px-5 rounded shadow-md ${isHomePage ? 'home-profile-menu' : 'bg-white text-gray-500'}`}>
-                <p className='cursor-pointer hover:text-black'>My Profile</p>
-                <p onClick={()=>navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
+            <div className={`${isProfileMenuOpen ? 'block' : 'hidden'} absolute right-0 z-50 pt-4`}>
+              <div
+                onClick={(event) => event.stopPropagation()}
+                className={`flex flex-col gap-2 w-36 py-3 px-5 rounded shadow-md ${isHomePage ? 'home-profile-menu' : 'bg-white text-gray-500'}`}
+              >
+                <p onClick={() => setIsProfileMenuOpen(false)} className='cursor-pointer hover:text-black'>My Profile</p>
+                <p onClick={()=>{navigate('/orders'); setIsProfileMenuOpen(false);}} className='cursor-pointer hover:text-black'>Orders</p>
                 <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
               </div>
             </div>

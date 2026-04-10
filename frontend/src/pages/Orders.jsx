@@ -5,15 +5,19 @@ import Title from '../components/Title';
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import PageSkeleton from '../components/PageSkeleton';
 
 
 const Orders = () => {
 
   const { backendUrl,token, currency } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([]);
+  const [isOrdersLoading, setIsOrdersLoading] = useState(true);
   const loadOrderData = async () => {
+    setIsOrdersLoading(true);
     try{
       if (!token) {
+        setIsOrdersLoading(false);
         return null;
         
       }
@@ -39,6 +43,8 @@ const Orders = () => {
 
     }catch(error){
       console.log(error);
+    } finally {
+      setIsOrdersLoading(false);
     }
   }
 
@@ -46,7 +52,7 @@ const Orders = () => {
     loadOrderData();
   },[token])
   return (
-
+    <PageSkeleton name="orders-page" loading={isOrdersLoading && orderData.length === 0}>
     <div className='border-t pt-16'> 
     <div className='text-2xl'>
       <Title text1={'My '} text2={'Orders'} />
@@ -109,6 +115,7 @@ const Orders = () => {
       )}
     </div>
     </div>
+    </PageSkeleton>
   )
 }
 

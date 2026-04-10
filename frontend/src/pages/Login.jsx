@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import { toast } from 'react-toastify';
+import PageSkeleton from '../components/PageSkeleton';
 
 const Login = () => {
   const [currrentState, setCurrentState] = useState('Login');
@@ -63,6 +64,7 @@ const Login = () => {
   })
 
   return (
+   <PageSkeleton name="login-page" resetKey={currrentState}>
    <form onSubmit={onSubmitHandler} className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4  text-gray-800' >
 
     <div className='inline-flex items-center gap-2 mb-2 mt-10'>
@@ -92,9 +94,10 @@ const Login = () => {
 
 </div>
 
-<button className='bg-black text-white font-light px-8 py-2 mt-4 '> {currrentState === 'Login' ? 'Sing In' : 'Sign Up'}</button>
+    <button className='bg-black text-white font-light px-8 py-2 mt-4 '> {currrentState === 'Login' ? 'Sing In' : 'Sign Up'}</button>
 
-   </form>
+    </form>
+    </PageSkeleton>
   )
 }
 

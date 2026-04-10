@@ -2,10 +2,11 @@ import React from 'react'
 import Title from '../components/Title'
 import { assets } from '../assets/assets'
 import NewsLatter from '../components/NewsLatter'
+import PageSkeleton from '../components/PageSkeleton'
 
 const About = () => {
   return (
-
+    <PageSkeleton name="about-page">
     <div>
       <div className='text-2xl text-center pt-8 border-t'>
         <Title text1={'About '} text2={'Us'} />
@@ -72,6 +73,7 @@ const About = () => {
       </div>
 
     </div>
+    </PageSkeleton>
 
   )
 }

@@ -3,11 +3,12 @@ import { ShopContext } from '../context/ShopContext'
 import { assets } from '../assets/assets'
 import ProductItem from '../components/ProductItem'
 import Title from '../components/Title'
+import { Skeleton } from 'boneyard-js/react'
 
 const Collection = () => {
 
 
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch, isProductsLoading } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -182,6 +183,7 @@ const Collection = () => {
 
         {/* Map products */}
 
+        <Skeleton name="collection-grid" loading={isProductsLoading && filterProducts.length === 0}>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6'>
 
           {
@@ -197,6 +199,7 @@ const Collection = () => {
           }
 
         </div>
+        </Skeleton>
       </div>
 
 

@@ -5,6 +5,7 @@ import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import PageSkeleton from '../components/PageSkeleton'
 
 const PlaceOrder = () => {
 
@@ -19,7 +20,8 @@ const PlaceOrder = () => {
     getCartItems,
     getCartAmount,
     delivery_fee,
-    products
+    products,
+    isProductsLoading
   } = useContext(ShopContext);
 
   const [formData, setFormData] = useState({
@@ -127,6 +129,7 @@ const PlaceOrder = () => {
   };
 
   return (
+    <PageSkeleton name="place-order-page" loading={isProductsLoading}>
     <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
 
       {/* left side */}
@@ -214,6 +217,7 @@ const PlaceOrder = () => {
       </div>
 
     </form>
+    </PageSkeleton>
   )
 }
 

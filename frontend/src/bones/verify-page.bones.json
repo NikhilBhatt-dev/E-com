@@ -1,0 +1,49 @@
+{
+  "breakpoints": {
+    "375": {
+      "name": "verify-page",
+      "viewportWidth": 343,
+      "width": 343,
+      "height": 153,
+      "bones": [
+        [
+          0,
+          0,
+          100,
+          153,
+          8
+        ]
+      ]
+    },
+    "768": {
+      "name": "verify-page",
+      "viewportWidth": 661,
+      "width": 661,
+      "height": 153,
+      "bones": [
+        [
+          0,
+          0,
+          100,
+          153,
+          8
+        ]
+      ]
+    },
+    "1280": {
+      "name": "verify-page",
+      "viewportWidth": 1050,
+      "width": 1050,
+      "height": 153,
+      "bones": [
+        [
+          0,
+          0,
+          100,
+          153,
+          8
+        ]
+      ]
+    }
+  }
+}
