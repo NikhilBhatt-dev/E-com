@@ -24,23 +24,30 @@ const PageSkeleton = ({
   fallback = defaultFallback,
   children,
 }) => {
+  const isBoneyardBuild =
+    typeof window !== 'undefined' && window.__BONEYARD_BUILD === true;
   const [introLoading, setIntroLoading] = useState(true);
 
   useEffect(() => {
+    if (isBoneyardBuild) {
+      setIntroLoading(false);
+      return undefined;
+    }
+
     setIntroLoading(true);
     const timeoutId = window.setTimeout(() => {
       setIntroLoading(false);
     }, minDuration);
 
     return () => window.clearTimeout(timeoutId);
-  }, [minDuration, resetKey]);
+  }, [isBoneyardBuild, minDuration, resetKey]);
 
   return (
     <Skeleton
       name={name}
-      loading={loading || introLoading}
+      loading={isBoneyardBuild ? false : loading || introLoading}
       fallback={fallback}
-      transition
+      transition={!isBoneyardBuild}
     >
       {children}
     </Skeleton>

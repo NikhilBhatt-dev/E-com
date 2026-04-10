@@ -12,10 +12,10 @@ const Contact = () => {
         <Title text1={'Contact '} text2={'Us'}></Title>
       </div>
       <div className='my-10 flex flex-col justify-center md:flex-row gap-10 mb-28'>
-        <img className="w-full md:max-w-[480px]" src={assets.contact_img} alt="contact"  />
+        <img className="w-full md:max-w-[480px]" src={assets.mustache} alt="contact"  />
         <div className='flex flex-col justify-center items-star gap-6'>
           <p className='font-semibold text-xl text-gray-600' >Our Store</p>
-          <p className='text-gray-500'>5478 Willms Station  <br /> San Francisco, CA 94107</p>
+          <p className='text-gray-500'>5478 New Delhi  <br /> India, CA 94107</p>
           <p className='text-gray-500'> Tel : (+91) 123-456-7890 <br /> Email :admin@Nikverse.com</p>
           <p className='font-semibold text-xl text-gray-600' >Carrers at Nikverse</p>
           <p className='text-gray-500'>Learn more about working at Nikverse  </p>

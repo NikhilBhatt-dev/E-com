@@ -23,6 +23,13 @@ const getStoredCartItems = () => {
     }
 };
 
+const isRequestAbortError = (error) =>
+    axios.isCancel(error) ||
+    error?.code === "ERR_CANCELED" ||
+    error?.name === "CanceledError" ||
+    error?.message === "canceled" ||
+    error?.message === "Request aborted";
+
 const ShopContextProvider = (props) => {
 
     const currency = '₹';
@@ -134,10 +141,10 @@ const ShopContextProvider = (props) => {
     }
 
   
-    const getProductData = async () => {
+    const getProductData = async (signal) => {
         setIsProductsLoading(true);
         try {
-            const response = await axios.get(backendUrl + '/api/product/list')
+            const response = await axios.get(backendUrl + '/api/product/list', { signal })
             if (response.data.success) {
                 const fetchedProducts = Array.isArray(response.data.products)
                     ? response.data.products
@@ -150,40 +157,66 @@ const ShopContextProvider = (props) => {
             }
            
         } catch (error) {
+            if (isRequestAbortError(error)) {
+                return;
+            }
+
             console.error(error);
             setProducts(fallbackProducts);
             toast.error(error.message);
         } finally {
-            setIsProductsLoading(false);
+            if (!signal?.aborted) {
+                setIsProductsLoading(false);
+            }
         }
     }
 
 
-    const getUserCart = async () => {
+    const getUserCart = async (signal) => {
         try {
-        const response = await axios.post(backendUrl + '/api/cart/get',{},{ headers: {token} })
+        const response = await axios.post(
+            backendUrl + '/api/cart/get',
+            {},
+            { headers: {token}, signal }
+        )
             if (response.data.success) {
                 setCartItems(response.data.cartData || {});
             }
         } catch (error) {
+            if (isRequestAbortError(error)) {
+                return;
+            }
+
             console.error(error);
             toast.error(error.message);
         }
     }
     useEffect(() => {
-        getProductData();
+        const controller = new AbortController();
+
+        getProductData(controller.signal);
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
 
     useEffect(() => {
+        const controller = new AbortController();
+
         if (token) {
             localStorage.setItem(TOKEN_STORAGE_KEY, token);
             axios.defaults.headers.common['token'] = token;
-            getUserCart();
+            getUserCart(controller.signal);
         } else {
             localStorage.removeItem(TOKEN_STORAGE_KEY);
             delete axios.defaults.headers.common['token'];
         }
+
+        return () => {
+            controller.abort();
+        };
     }, [token]);
 
     useEffect(() => {

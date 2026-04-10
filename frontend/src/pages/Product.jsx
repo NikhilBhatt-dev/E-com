@@ -10,19 +10,16 @@ import PageSkeleton from '../components/PageSkeleton';
 const Product = () => {
   const { productId } = useParams();
   const { products, currency, addToCart, isProductsLoading } = useContext(ShopContext);
-  const [productData, setProductData] = useState(false);
+  const [productData, setProductData] = useState(null);
   const [image, setImage] = useState('');
   const [size, setSize] = useState('');
 
   const fetchProductData = () => {
-    products.map((item) => {
-      if (item._id === productId) {
-        setProductData(item);
-        setImage(item.image[0]);
-        return null;
-      }
-    })
+    const matchedProduct = products.find((item) => item._id === productId) || null;
 
+    setProductData(matchedProduct);
+    setImage(matchedProduct?.image?.[0] || '');
+    setSize('');
   }
   useEffect(() => {
     fetchProductData();
