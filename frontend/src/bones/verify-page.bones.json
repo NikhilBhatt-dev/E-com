@@ -1,20 +1,5 @@
 {
   "breakpoints": {
-    "375": {
-      "name": "verify-page",
-      "viewportWidth": 343,
-      "width": 343,
-      "height": 153,
-      "bones": [
-        [
-          0,
-          0,
-          100,
-          153,
-          8
-        ]
-      ]
-    },
     "768": {
       "name": "verify-page",
       "viewportWidth": 661,
