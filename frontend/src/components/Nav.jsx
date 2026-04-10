@@ -48,7 +48,7 @@ const Nav = ({ theme, toggleTheme, isHomePage }) => {
   return (
     <div className={`flex items-center justify-between py-5 font-medium transition-colors duration-300 ${isHomePage ? 'home-nav' : ''}`}>
      <Link to='/'>
-     <img src={assets.logo} alt="logo" className='w-36'/>
+     <img src={assets.logo} alt="logo" className='w-28'/>
           </Link>
     <ul className={`hidden sm:flex gap-5 text-sm ${isHomePage ? 'home-nav-links' : 'text-gray-700'}`}>
 
