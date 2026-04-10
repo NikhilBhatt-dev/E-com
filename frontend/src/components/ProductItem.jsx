@@ -13,6 +13,8 @@ const ProductItem = ({ id, image, name, price }) => {
                 <img 
                     src={image[0]} 
                     onError={(e) => (e.target.src = image[1]?.url)} 
+                    loading='lazy'
+                    decoding='async'
                     className='hover:scale-110 transition ease-in-out' 
                     alt={name}
                 />
