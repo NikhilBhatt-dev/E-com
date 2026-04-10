@@ -9,7 +9,7 @@ export default defineConfig({
     boneyardPlugin({
       framework: 'react',
       out: './src/bones',
-      routes: ['/', '/about', '/contact', '/cart', '/collection', '/login', '/orders', '/place-order', '/verify'],
+      routes: ['/', '/about', '/contact', '/cart', '/collection', '/login', '/orders', '/place-order', '/profile', '/verify'],
     }),
   ],
   server : {port : 5173}

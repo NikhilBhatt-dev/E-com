@@ -102,4 +102,33 @@ const adminLogin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, adminLogin };
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId).select("name email cartData");
+
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        cartItemsCount: Object.values(user.cartData || {}).reduce((total, sizeMap) => {
+          if (!sizeMap || typeof sizeMap !== "object") {
+            return total;
+          }
+
+          return total + Object.values(sizeMap).reduce((count, qty) => count + Number(qty || 0), 0);
+        }, 0),
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { loginUser, registerUser, adminLogin, getUserProfile };

@@ -111,7 +111,7 @@ const Nav = ({ theme, toggleTheme, isHomePage }) => {
                 onClick={(event) => event.stopPropagation()}
                 className={`flex flex-col gap-2 w-36 py-3 px-5 rounded shadow-md ${isHomePage ? 'home-profile-menu' : 'bg-white text-gray-500'}`}
               >
-                <p onClick={() => setIsProfileMenuOpen(false)} className='cursor-pointer hover:text-black'>My Profile</p>
+                <p onClick={() => {navigate('/profile'); setIsProfileMenuOpen(false);}} className='cursor-pointer hover:text-black'>My Profile</p>
                 <p onClick={()=>{navigate('/orders'); setIsProfileMenuOpen(false);}} className='cursor-pointer hover:text-black'>Orders</p>
                 <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
               </div>
