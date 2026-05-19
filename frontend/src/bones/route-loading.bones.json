@@ -1,0 +1,11 @@
+{
+  "breakpoints": {
+    "1280": {
+      "name": "route-loading",
+      "viewportWidth": 1050,
+      "width": 1050,
+      "height": 0,
+      "bones": []
+    }
+  }
+}
